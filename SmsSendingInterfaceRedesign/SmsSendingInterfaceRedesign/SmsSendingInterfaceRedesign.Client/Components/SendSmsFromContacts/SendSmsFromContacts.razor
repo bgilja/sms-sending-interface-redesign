@@ -1,5 +1,7 @@
 ﻿@using SmsSendingInterfaceRedesign.Client.Components.Core.Dropdown
 
+@inject NotificationService NotificationService
+
 <h3>SendSmsFromContacts</h3>
 
 <RadzenCardGroup Responsive="true" class="rz-my-12">
@@ -58,8 +60,8 @@
 </RadzenCardGroup>
 
 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End">
-    <RadzenButton Text="Clear" ButtonStyle="ButtonStyle.Danger" />
-    <RadzenButton Text="Send" ButtonStyle="ButtonStyle.Primary" />
+    <RadzenButton Click="HandleClearButtonClick" Text="Clear" ButtonStyle="ButtonStyle.Danger" />
+    <RadzenButton Click="HandleSendButtonClick" Text="Send" ButtonStyle="ButtonStyle.Primary" />
 </RadzenStack>
 
 @code {
@@ -182,5 +184,34 @@
         _smsTemplate = smsTemplate;
 
         _smsPreview = GetMergeSMSPreview();
+    }
+
+    private void HandleClearButtonClick()
+    {
+        Reset();
+    }
+
+    private void HandleSendButtonClick()
+    {
+        var notificationMessage = new NotificationMessage
+            {
+                Severity = NotificationSeverity.Success,
+                Summary = "SMS sent successfully",
+                Detail = $"Successfully sent SMS message to {_previewUserOptions.Count} users",
+                Duration = 5000
+            };
+        NotificationService.Notify(notificationMessage);
+
+        Reset();
+    }
+
+    private void Reset()
+    {
+        _selectedItems = [];
+        _previewUserOptions = [];
+        _selectedPreviewUser = null;
+
+        _smsTemplate = string.Empty;
+        _smsPreview = string.Empty;
     }
 }
