@@ -1,0 +1,33 @@
+﻿@inherits LayoutComponentBase
+
+<RadzenComponents @rendermode="InteractiveWebAssembly" />
+
+<RadzenLayout>
+    <RadzenHeader>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+            <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
+        </RadzenStack>
+    </RadzenHeader>
+
+    <RadzenSidebar @bind-Expanded="@sidebarExpanded">
+        <RadzenPanelMenu>
+            <RadzenPanelMenuItem Text="Home" Icon="home" Path="" />
+            <RadzenPanelMenuItem Text="Send SMS from contacts" Icon="group" Path="send/contacts" />
+            <RadzenPanelMenuItem Text="Send SMS from Excel" Icon="upload" />
+            <RadzenPanelMenuItem Text="Group SMS" Icon="communities" />
+            <RadzenPanelMenuItem Text="Dialog SMS" Icon="sms" />
+            <RadzenPanelMenuItem Text="Outbox" Icon="outgoing_mail" />
+            <RadzenPanelMenuItem Text="Sent" Icon="done_all" />
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+
+    <RadzenBody>
+        <div class="rz-p-4">
+            @Body
+        </div>
+    </RadzenBody>
+</RadzenLayout>
+
+@code {
+    bool sidebarExpanded = true;
+}

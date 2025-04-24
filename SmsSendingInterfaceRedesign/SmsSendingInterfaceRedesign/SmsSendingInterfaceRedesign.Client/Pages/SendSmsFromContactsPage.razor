@@ -1,0 +1,25 @@
+﻿@page "/send/contacts"
+@using SmsSendingInterfaceRedesign.Client.Components.SendSmsFromContacts
+
+<PageTitle>Send SMS from contacts</PageTitle>
+
+<SendSmsFromContacts Users="GetUsers()" Groups="UserGroups"></SendSmsFromContacts>
+
+@code {
+    private readonly IList<UserGroupDto> UserGroups = [
+        new("Innovators Hub", [
+            new("Ava", "Reynolds"),
+            new("Jamal", "Peterson"),
+        ]),
+        new("Global Connectors", [
+            new("Elise", "Zhang"),
+            new("Noah", "Martinez"),
+            new("Priya", "Kapoor"),
+        ]),
+    ];
+
+    private IList<UserDto> GetUsers()
+    {
+        return UserGroups.SelectMany(group => group.Users).ToList();
+    }
+}

@@ -1,0 +1,29 @@
+﻿<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.1rem">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <RadzenLabel Text="@Label" Component="DropDownBindValue" Style="width: 70px;" />
+    }
+
+    <RadzenDropDown Placeholder="@Placeholder" Change="(value) => HandleSelectionChange((DropdownItem)value)" @bind-Value=@SelectedItem Data=@Items Multiple=false AllowSelectAll=false Style="max-width: 400px;" Name="DropDownBindValue" />
+</RadzenStack>
+
+@code {
+    [Parameter]
+    public DropdownItem? SelectedItem { get; set; } = null;
+
+    [Parameter] public EventCallback<DropdownItem?> SelectedItemChanged { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; } = null;
+
+    [Parameter]
+    public string? Placeholder { get; set; } = null;
+
+    [Parameter]
+    public IList<DropdownItem> Items { get; set; } = [];
+
+    private async Task HandleSelectionChange(DropdownItem value)
+    {
+        await this.SelectedItemChanged.InvokeAsync(value);
+    }
+}

@@ -1,0 +1,186 @@
+﻿@using SmsSendingInterfaceRedesign.Client.Components.Core.Dropdown
+
+<h3>SendSmsFromContacts</h3>
+
+<RadzenCardGroup Responsive="true" class="rz-my-12">
+
+    <RadzenCard Variant="Variant.Filled" Style="padding: 30px; height: 500px;">
+        <RadzenStack Orientation="Orientation.Vertical" Gap="1rem">
+            <RadzenText TextStyle="TextStyle.H5">Compose merge SMS</RadzenText>
+
+            <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.Center" Gap="0.5rem">
+                <RadzenAlert Title="Merge SMS" AllowClose="false" AlertStyle="AlertStyle.Light" Variant="Variant.Flat" Shade="Shade.Lighter">
+                    Merge SMS is a service where you can merge information contacts into a SMS message.
+
+                    <br />
+
+                    <RadzenLink>Help, show me how!</RadzenLink>
+                </RadzenAlert>
+
+                @foreach (var option in MergeSMSActionOptions)
+                {
+                    <RadzenButton Click=@(args => HandleBadgeClick(option)) Text="@option.Name" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.ExtraSmall" />
+                }
+            </RadzenStack>
+
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap">
+                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">TextArea with placeholder</RadzenText>
+                <RadzenTextArea Placeholder="Enter here..." Style="width: 100%" aria-label="TextArea with placeholder" Rows="5" Value="@_smsTemplate" Change="(value) => HandleSmsTemplateChange(value)" />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenCard>
+
+    <RadzenCard Variant="Variant.Filled" Style="padding: 30px; height: 500px;">
+        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.SpaceEvenly">
+            <RadzenText TextStyle="TextStyle.H5">Merge SMS preview</RadzenText>
+
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap" class="rz-py-6">
+                <RadzenSelectBar TValue="SendSmsFromContactsMode" Size="ButtonSize.Small" @bind-Value="@_mode" Change="HandleModeChange">
+                    <Items>
+                        <RadzenSelectBarItem Value="SendSmsFromContactsMode.User" Text="User" />
+                        <RadzenSelectBarItem Value="SendSmsFromContactsMode.Group" Text="Group" />
+                    </Items>
+                </RadzenSelectBar>
+                <MultiSelect Placeholder="Select users or groups" Items="_dropdownItemOptions" SelectedItems="_selectedItems" SelectedItemsChanged="HandleSelectedItemsChange"></MultiSelect>
+            </RadzenStack>
+
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap" class="rz-py-6">
+                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Preview for user: </RadzenText>
+                <Select Placeholder="Select preview user" Items="_previewUserOptions" SelectedItemChanged="HandlePreviewUserChange"></Select>
+            </RadzenStack>
+
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap" class="rz-py-2">
+                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">TextArea with placeholder</RadzenText>
+                <RadzenTextArea Style="width: 100%" ReadOnly=true Value="@_smsPreview" Rows="5" />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenCard>
+</RadzenCardGroup>
+
+<RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End">
+    <RadzenButton Text="Clear" ButtonStyle="ButtonStyle.Danger" />
+    <RadzenButton Text="Send" ButtonStyle="ButtonStyle.Primary" />
+</RadzenStack>
+
+@code {
+    [Parameter]
+    public required IList<UserDto> Users { get; set; } = new List<UserDto>();
+
+    [Parameter]
+    public required IList<UserGroupDto> Groups { get; set; } = new List<UserGroupDto>();
+
+    SendSmsFromContactsMode _mode = SendSmsFromContactsMode.User;
+
+    private IList<DropdownItem> _dropdownItemOptions = [];
+    private IList<DropdownItem> _selectedItems = [];
+
+    private IList<DropdownItem> _previewUserOptions = [];
+    private DropdownItem? _selectedPreviewUser = null;
+
+    private string _smsTemplate = string.Empty;
+    private string _smsPreview = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        _dropdownItemOptions = GetDropdownSelectionOptions();
+    }
+
+    private IList<DropdownItem> GetPreviewUsers()
+    {
+        if (_mode == SendSmsFromContactsMode.User)
+        {
+            return Users
+                .Where(user => _selectedItems.Any(selectedItem => selectedItem.Key == user.Id))
+                .Select(user => new DropdownItem(user.Id, user.FullName))
+                .ToList();
+        }
+
+        if (_mode == SendSmsFromContactsMode.Group)
+        {
+            return Groups
+                .Where(group => _selectedItems.Any(selectedItem => selectedItem.Key == group.Id))
+                .SelectMany(group => group.Users)
+                .Select(user => new DropdownItem(user.Id, user.FullName))
+                .ToList();
+        }
+
+        throw new NotSupportedException("No mode selected");
+    }
+
+    private IList<DropdownItem> GetDropdownSelectionOptions()
+    {
+        if (_mode == SendSmsFromContactsMode.User)
+        {
+            return Users.Select(user => new DropdownItem(user.Id, user.FullName)).ToList();
+        }
+
+        if (_mode == SendSmsFromContactsMode.Group)
+        {
+            return Groups.Select(group => new DropdownItem(group.Id, $"{group.Name} ({group.Users.Count})")).ToList();
+        }
+
+        throw new NotSupportedException("No mode selected");
+    }
+
+    private readonly IList<MergeSMSActionOption> MergeSMSActionOptions = [
+        new("Mobile number", "MobileNumber"),
+        new("First name", "FirstName"),
+        new("Last name", "LastName"),
+        new("Email", "Email"),
+        new("Street address", "StreetAddress"),
+        new("Postal code", "PostalCode"),
+        new("Post city", "PostCity"),
+        new("Gender", "Gender"),
+        new("Birth", "Birth"),
+    ];
+
+    private void HandleBadgeClick(MergeSMSActionOption option)
+    {
+        Console.WriteLine(option.PropertyName);
+
+        _smsTemplate = $"{_smsTemplate} [{option.PropertyName}]";
+    }
+
+    private string GetMergeSMSPreview()
+    {
+        if (_selectedPreviewUser is null || string.IsNullOrWhiteSpace(_smsTemplate))
+        {
+            return string.Empty;
+        }
+
+        return _smsTemplate;
+    }
+
+    private void HandleModeChange(SendSmsFromContactsMode mode)
+    {
+        _mode = mode;
+
+        _dropdownItemOptions = GetDropdownSelectionOptions();
+        _selectedItems = [];
+
+        _previewUserOptions = [];
+        _selectedPreviewUser = null;
+    }
+
+    private void HandleSelectedItemsChange(IList<DropdownItem> selectedItems)
+    {
+        _selectedItems = selectedItems;
+
+        _previewUserOptions = GetPreviewUsers();
+        _selectedPreviewUser = null;
+    }
+
+    private void HandlePreviewUserChange(DropdownItem selectedPreviewUser)
+    {
+        _selectedPreviewUser = selectedPreviewUser;
+
+        _smsPreview = GetMergeSMSPreview();
+    }
+
+    private void HandleSmsTemplateChange(string smsTemplate)
+    {
+        _smsTemplate = smsTemplate;
+
+        _smsPreview = GetMergeSMSPreview();
+    }
+}
