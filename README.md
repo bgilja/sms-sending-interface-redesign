@@ -1,5 +1,7 @@
 # SMS Sender Interface Redesign
 
+![screenshot](Screenshot.png)
+
 Notes can be found at [NOTES.md](NOTES.md)
 
 ## 📲 SMS Sender Interface (Blazor)
