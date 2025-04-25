@@ -59,7 +59,7 @@
                 </span>
 
                 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap" Style="width: 100%;" class="rz-pt-6">
-                    <RadzenDatePicker Placeholder="Schedule Date" @bind-Value=@_scheduleDate ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Name="DatePickerWithTime" class="rz-p-0 rz-m-0" />
+                    <RadzenDatePicker Placeholder="Schedule Date" @bind-Value=@_scheduleDate ShowTime="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="dd/MM/yyyy HH:mm" Name="DatePickerWithTime" class="rz-p-0 rz-m-0" />
                     <Select Placeholder="Select template" Items="_messageTemplateOptions" SelectedItem="_selectedTemplateOption" SelectedItemChanged="HandleMessageTemplateSelection"></Select>
                 </RadzenStack>
             </RadzenStack>
@@ -76,7 +76,7 @@
                 </RadzenStack>
 
                 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.1" Wrap="FlexWrap.Wrap" class="rz-py-1">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">TextArea with placeholder</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Message preview</RadzenText>
                     <div style="background-color: antiquewhite; display: flex; width: 100%; min-height: 40px; padding: 10px; border-radius: 6px;">
                         <p>@_smsPreview</p>
                     </div>
@@ -174,14 +174,14 @@
     private readonly IList<MergeSMSActionOption> MergeSMSActionOptions =
     [
         new("Mobile number", "MobileNumber", UserPropertySelector.MobileNumber),
-    new("First name", "FirstName", UserPropertySelector.FirstName),
-    new("Last name", "LastName", UserPropertySelector.LastName),
-    new("Email", "Email", UserPropertySelector.Email),
-    new("Street address", "StreetAddress", UserPropertySelector.StreetAddress),
-    new("Postal code", "PostalCode", UserPropertySelector.PostalCode),
-    new("Post city", "PostCity", UserPropertySelector.PostCity),
-    new("Gender", "Gender", UserPropertySelector.Gender),
-    new("Birth", "Birth", UserPropertySelector.Birth),
+        new("First name", "FirstName", UserPropertySelector.FirstName),
+        new("Last name", "LastName", UserPropertySelector.LastName),
+        new("Email", "Email", UserPropertySelector.Email),
+        new("Street address", "StreetAddress", UserPropertySelector.StreetAddress),
+        new("Postal code", "PostalCode", UserPropertySelector.PostalCode),
+        new("Post city", "PostCity", UserPropertySelector.PostCity),
+        new("Gender", "Gender", UserPropertySelector.Gender),
+        new("Birth", "Birth", UserPropertySelector.Birth),
     ];
 
     private void HandleBadgeClick(MergeSMSActionOption option)
@@ -286,6 +286,7 @@
         _messagesSentPerRecipient = 1;
 
         _selectedTemplateOption = null;
+        _scheduleDate = null;
 
         StateHasChanged();
     }

@@ -14,10 +14,12 @@
 
     private IList<UserDto> GetUsers()
     {
-        return UserGroups.SelectMany(group => group.Users).ToList();
+        return UserGroups.SelectMany(group => group.Users).OrderBy(user => user.FullName).ToList();
     }
 
     private readonly IList<MergeSMSTemplate> MessageTemplates = [
+        new("Alert (system downtime)", "Hello [FirstName], we’re experiencing a temporary service interruption. Our team is working on it and we’ll keep you updated."),
         new("Greeting", "Hello [FirstName]!"),
+        new("Subscription renewal", "Hello [FirstName], your subscription is set to expire at the end of this week. Please renew promptly to ensure continued access."),
     ];
 }

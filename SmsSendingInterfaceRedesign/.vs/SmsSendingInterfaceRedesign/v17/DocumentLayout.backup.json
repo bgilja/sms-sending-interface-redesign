@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Development\\Integrera test\\sms-sending-interface-redesign\\SmsSendingInterfaceRedesign\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{14248210-B1CF-44BF-A141-99B659EC31C8}|SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\SmsSendingInterfaceRedesign.Client.csproj|c:\\development\\integrera test\\sms-sending-interface-redesign\\smssendinginterfaceredesign\\smssendinginterfaceredesign\\smssendinginterfaceredesign.client\\components\\sendsmsfromcontacts\\sendsmsfromcontacts.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{14248210-B1CF-44BF-A141-99B659EC31C8}|SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\SmsSendingInterfaceRedesign.Client.csproj|solutionrelative:smssendinginterfaceredesign\\smssendinginterfaceredesign.client\\components\\sendsmsfromcontacts\\sendsmsfromcontacts.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{14248210-B1CF-44BF-A141-99B659EC31C8}|SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\SmsSendingInterfaceRedesign.Client.csproj|c:\\development\\integrera test\\sms-sending-interface-redesign\\smssendinginterfaceredesign\\smssendinginterfaceredesign\\smssendinginterfaceredesign.client\\pages\\sendsmsfromcontactspage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{14248210-B1CF-44BF-A141-99B659EC31C8}|SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\SmsSendingInterfaceRedesign.Client.csproj|solutionrelative:smssendinginterfaceredesign\\smssendinginterfaceredesign.client\\pages\\sendsmsfromcontactspage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{14248210-B1CF-44BF-A141-99B659EC31C8}|SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\SmsSendingInterfaceRedesign.Client.csproj|c:\\development\\integrera test\\sms-sending-interface-redesign\\smssendinginterfaceredesign\\smssendinginterfaceredesign\\smssendinginterfaceredesign.client\\components\\sendsmsfromcontacts\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{14248210-B1CF-44BF-A141-99B659EC31C8}|SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\SmsSendingInterfaceRedesign.Client.csproj|solutionrelative:smssendinginterfaceredesign\\smssendinginterfaceredesign.client\\components\\sendsmsfromcontacts\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{14248210-B1CF-44BF-A141-99B659EC31C8}|SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\SmsSendingInterfaceRedesign.Client.csproj|c:\\development\\integrera test\\sms-sending-interface-redesign\\smssendinginterfaceredesign\\smssendinginterfaceredesign\\smssendinginterfaceredesign.client\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{14248210-B1CF-44BF-A141-99B659EC31C8}|SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\SmsSendingInterfaceRedesign.Client.csproj|solutionrelative:smssendinginterfaceredesign\\smssendinginterfaceredesign.client\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,28 +38,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UserDto.cs",
-              "DocumentMoniker": "C:\\Development\\Integrera test\\sms-sending-interface-redesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Components\\SendSmsFromContacts\\UserDto.cs",
-              "RelativeDocumentMoniker": "SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Components\\SendSmsFromContacts\\UserDto.cs",
-              "ToolTip": "C:\\Development\\Integrera test\\sms-sending-interface-redesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Components\\SendSmsFromContacts\\UserDto.cs",
-              "RelativeToolTip": "SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Components\\SendSmsFromContacts\\UserDto.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAArwC0AAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-25T00:16:31.739Z",
+              "DocumentIndex": 0,
+              "Title": "SendSmsFromContactsPage.razor",
+              "DocumentMoniker": "C:\\Development\\Integrera test\\sms-sending-interface-redesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Pages\\SendSmsFromContactsPage.razor",
+              "RelativeDocumentMoniker": "SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Pages\\SendSmsFromContactsPage.razor",
+              "ToolTip": "C:\\Development\\Integrera test\\sms-sending-interface-redesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Pages\\SendSmsFromContactsPage.razor",
+              "RelativeToolTip": "SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Pages\\SendSmsFromContactsPage.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-25T06:16:34.022Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "SendSmsFromContacts.razor",
-              "DocumentMoniker": "C:\\Development\\Integrera test\\sms-sending-interface-redesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Components\\SendSmsFromContacts\\SendSmsFromContacts.razor",
-              "RelativeDocumentMoniker": "SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Components\\SendSmsFromContacts\\SendSmsFromContacts.razor",
-              "ToolTip": "C:\\Development\\Integrera test\\sms-sending-interface-redesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Components\\SendSmsFromContacts\\SendSmsFromContacts.razor",
-              "RelativeToolTip": "SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\Components\\SendSmsFromContacts\\SendSmsFromContacts.razor",
-              "ViewState": "AgIAAAoBAAAAAAAAAAAqwBwBAAAbAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "C:\\Development\\Integrera test\\sms-sending-interface-redesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\_Imports.razor",
+              "RelativeDocumentMoniker": "SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\_Imports.razor",
+              "ToolTip": "C:\\Development\\Integrera test\\sms-sending-interface-redesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\_Imports.razor",
+              "RelativeToolTip": "SmsSendingInterfaceRedesign\\SmsSendingInterfaceRedesign.Client\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-24T23:50:56.248Z",
+              "WhenOpened": "2025-04-25T06:16:33.282Z",
               "EditorCaption": ""
             }
           ]
