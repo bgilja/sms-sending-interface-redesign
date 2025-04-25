@@ -1,10 +1,5 @@
 ﻿<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.1rem">
-    @if (!string.IsNullOrWhiteSpace(Label)) 
-    {
-        <RadzenLabel Text="@Label" Component="DropDownBindValue" Style="width: 70px;" />
-    }
-
-    <RadzenDropDown Placeholder="@Placeholder" Change="(value) => HandleSelectedItemsChange(((EnumerableQuery<DropdownItem>)value).ToList())" @bind-Value=@SelectedItems Data=@Items Multiple=true AllowSelectAll=false Style="max-width: 400px;" Name="DropDownBindValue" />
+    <RadzenDropDown Placeholder="@Placeholder" Change="(value) => HandleSelectedItemsChange(((EnumerableQuery<DropdownItem>)value).ToList())" @bind-Value=@SelectedItems Data=@Items Multiple=true AllowSelectAll=false Name="DropDownBindValue" />
 </RadzenStack>
 
 @code {
@@ -12,9 +7,6 @@
     public IList<DropdownItem> SelectedItems { get; set; } = [];
 
     [Parameter] public EventCallback<IList<DropdownItem>> SelectedItemsChanged { get; set; }
-
-    [Parameter]
-    public string? Label { get; set; } = null;
 
     [Parameter]
     public string? Placeholder { get; set; } = null;

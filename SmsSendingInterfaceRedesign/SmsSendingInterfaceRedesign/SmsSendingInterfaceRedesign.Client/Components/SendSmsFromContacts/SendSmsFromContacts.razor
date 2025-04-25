@@ -2,15 +2,22 @@
 
 @inject NotificationService NotificationService
 
-<h3>SendSmsFromContacts</h3>
+<h3>Send SMS from contacts</h3>
 
 <RadzenCardGroup Responsive="true" class="rz-my-12">
 
-    <RadzenCard Variant="Variant.Filled" Style="padding: 30px; height: 500px;">
-        <RadzenStack Orientation="Orientation.Vertical" Gap="1rem">
-            <RadzenText TextStyle="TextStyle.H5">Compose merge SMS</RadzenText>
+    <RadzenCard Variant="Variant.Filled" Style="padding: 30px; height: max-content;">
+        <RadzenStack Orientation="Orientation.Vertical" Gap="0.25rem" Style="width: 100%;">
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" Wrap="FlexWrap.Wrap">
+                <RadzenText TextStyle="TextStyle.H5" TextAlign="TextAlign.Left">Compose SMS</RadzenText>
 
-            <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.Center" Gap="0.5rem">
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.5rem">
+                    <RadzenLabel Text="Show preview" Component="True" />
+                    <RadzenSwitch Value="_showPreview" Change="() => _showPreview = !_showPreview" />
+                </RadzenStack>
+            </RadzenStack>
+
+            <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.Center">
                 <RadzenAlert Title="Merge SMS" AllowClose="false" AlertStyle="AlertStyle.Light" Variant="Variant.Flat" Shade="Shade.Lighter">
                     Merge SMS is a service where you can merge information contacts into a SMS message.
 
@@ -18,45 +25,65 @@
 
                     <RadzenLink>Help, show me how!</RadzenLink>
                 </RadzenAlert>
-
-                @foreach (var option in MergeSMSActionOptions)
-                {
-                    <RadzenButton Click=@(args => HandleBadgeClick(option)) Text="@option.Name" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.ExtraSmall" />
-                }
             </RadzenStack>
 
-            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap">
-                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">TextArea with placeholder</RadzenText>
-                <RadzenTextArea Placeholder="Enter here..." Style="width: 100%" aria-label="TextArea with placeholder" Rows="5" Value="@_smsTemplate" Change="(value) => HandleSmsTemplateChange(value)" />
+            <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Start" class="rz-py-2" Style="width: 100%;">
+                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">User selection</RadzenText>
+
+                <RadzenStack Orientation="Orientation.Horizontal" Wrap="FlexWrap.Wrap" Style="width: 100%;">
+                    <RadzenSelectBar TValue="SendSmsFromContactsMode" Size="ButtonSize.Medium" @bind-Value="@_mode" Change="HandleModeChange">
+                        <Items>
+                            <RadzenSelectBarItem Value="SendSmsFromContactsMode.User" Text="User" />
+                            <RadzenSelectBarItem Value="SendSmsFromContactsMode.Group" Text="Group" />
+                        </Items>
+                    </RadzenSelectBar>
+                    <MultiSelect Placeholder="Select users or groups" Items="_dropdownItemOptions" SelectedItems="_selectedItems" SelectedItemsChanged="HandleSelectedItemsChange"></MultiSelect>
+                </RadzenStack>
+            </RadzenStack>
+
+            <RadzenStack Orientation="Orientation.Vertical" AlignItems="AlignItems.Start" class="rz-py-2" Style="width: 100%;">
+                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Write message</RadzenText>
+
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap" class="rz-py-2" Style="width: 100%;">
+                    @foreach (var option in MergeSMSActionOptions)
+                    {
+                        <RadzenButton Click=@(args => HandleBadgeClick(option)) Text="@option.Name" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.ExtraSmall" />
+                    }
+                </RadzenStack>
+
+                <RadzenTextArea Placeholder="Enter here..." Style="width: 100%" aria-label="Write message" Rows="5" Value="@_smsTemplate" @oninput="(args) => HandleSmsTemplateChange(args.Value?.ToString() ?? string.Empty)" />
+                <span>
+                    @_smsTemplate.Length characters (@(_maxSmsLength - (_smsTemplate.Length % _maxSmsLength)) left until new message).
+                    <br/>
+                    Total @(_messagesSentPerRecipient * _previewUserOptions.Count) SMS messages will be sent (@_messagesSentPerRecipient per each recipient, @_previewUserOptions.Count total recipients)
+                </span>
+
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Wrap="FlexWrap.Wrap" Style="width: 100%;" class="rz-pt-6">
+                    <RadzenDatePicker Placeholder="Schedule Date" @bind-Value=@_scheduleDate ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Name="DatePickerWithTime" class="rz-p-0 rz-m-0" />
+                    <Select Placeholder="Select template" Items="_messageTemplateOptions" SelectedItem="_selectedTemplateOption" SelectedItemChanged="HandleMessageTemplateSelection"></Select>
+                </RadzenStack>
             </RadzenStack>
         </RadzenStack>
     </RadzenCard>
 
-    <RadzenCard Variant="Variant.Filled" Style="padding: 30px; height: 500px;">
-        <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.SpaceEvenly">
-            <RadzenText TextStyle="TextStyle.H5">Merge SMS preview</RadzenText>
+    @if (_showPreview)
+    {
+        <RadzenCard Variant="Variant.Filled" Style="padding: 30px; height: auto;">
+            <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.SpaceEvenly">
+                <RadzenText TextStyle="TextStyle.H5">Preview</RadzenText>
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap" class="rz-py-6">
+                    <Select Placeholder="Select preview user" Items="_previewUserOptions" SelectedItem="_selectedPreviewUser" SelectedItemChanged="HandlePreviewUserChange"></Select>
+                </RadzenStack>
 
-            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap" class="rz-py-6">
-                <RadzenSelectBar TValue="SendSmsFromContactsMode" Size="ButtonSize.Small" @bind-Value="@_mode" Change="HandleModeChange">
-                    <Items>
-                        <RadzenSelectBarItem Value="SendSmsFromContactsMode.User" Text="User" />
-                        <RadzenSelectBarItem Value="SendSmsFromContactsMode.Group" Text="Group" />
-                    </Items>
-                </RadzenSelectBar>
-                <MultiSelect Placeholder="Select users or groups" Items="_dropdownItemOptions" SelectedItems="_selectedItems" SelectedItemsChanged="HandleSelectedItemsChange"></MultiSelect>
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.1" Wrap="FlexWrap.Wrap" class="rz-py-1">
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">TextArea with placeholder</RadzenText>
+                    <div style="background-color: antiquewhite; display: flex; width: 100%; min-height: 40px; padding: 10px; border-radius: 6px;">
+                        <p>@_smsPreview</p>
+                    </div>
+                </RadzenStack>
             </RadzenStack>
-
-            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap" class="rz-py-6">
-                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Preview for user: </RadzenText>
-                <Select Placeholder="Select preview user" Items="_previewUserOptions" SelectedItemChanged="HandlePreviewUserChange"></Select>
-            </RadzenStack>
-
-            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="FlexWrap.Wrap" class="rz-py-2">
-                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">TextArea with placeholder</RadzenText>
-                <RadzenTextArea Style="width: 100%" ReadOnly=true Value="@_smsPreview" Rows="5" />
-            </RadzenStack>
-        </RadzenStack>
-    </RadzenCard>
+        </RadzenCard>
+    }
 </RadzenCardGroup>
 
 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End">
@@ -71,20 +98,35 @@
     [Parameter]
     public required IList<UserGroupDto> Groups { get; set; } = new List<UserGroupDto>();
 
+    [Parameter]
+    public required IList<MergeSMSTemplate> MessageTemplates { get; set; } = new List<MergeSMSTemplate>();
+
+    [Parameter]
+    public EventCallback<(IList<DropdownItem> Users, string _smsTemplate)> HandleSmsSendClick { get; set; }
+
     SendSmsFromContactsMode _mode = SendSmsFromContactsMode.User;
+
+    private const int _maxSmsLength = 100;
+
+    private bool _showPreview = false;
+    private DateTime? _scheduleDate = null;
 
     private IList<DropdownItem> _dropdownItemOptions = [];
     private IList<DropdownItem> _selectedItems = [];
+    private IList<DropdownItem> _messageTemplateOptions = [];
 
     private IList<DropdownItem> _previewUserOptions = [];
     private DropdownItem? _selectedPreviewUser = null;
+    private DropdownItem? _selectedTemplateOption = null;
 
     private string _smsTemplate = string.Empty;
-    private string _smsPreview = string.Empty;
+    private int _messagesSentPerRecipient = 0;
+    private MarkupString _smsPreview = new();
 
     protected override void OnInitialized()
     {
         _dropdownItemOptions = GetDropdownSelectionOptions();
+        _messageTemplateOptions = GetMessageTemplateSelectionOptions();
     }
 
     private IList<DropdownItem> GetPreviewUsers()
@@ -124,33 +166,45 @@
         throw new NotSupportedException("No mode selected");
     }
 
-    private readonly IList<MergeSMSActionOption> MergeSMSActionOptions = [
-        new("Mobile number", "MobileNumber"),
-        new("First name", "FirstName"),
-        new("Last name", "LastName"),
-        new("Email", "Email"),
-        new("Street address", "StreetAddress"),
-        new("Postal code", "PostalCode"),
-        new("Post city", "PostCity"),
-        new("Gender", "Gender"),
-        new("Birth", "Birth"),
+    private IList<DropdownItem> GetMessageTemplateSelectionOptions()
+    {
+        return MessageTemplates.Select(messageTemplate => new DropdownItem(messageTemplate.Id, messageTemplate.Name)).ToList();
+    }
+
+    private readonly IList<MergeSMSActionOption> MergeSMSActionOptions =
+    [
+        new("Mobile number", "MobileNumber", UserPropertySelector.MobileNumber),
+    new("First name", "FirstName", UserPropertySelector.FirstName),
+    new("Last name", "LastName", UserPropertySelector.LastName),
+    new("Email", "Email", UserPropertySelector.Email),
+    new("Street address", "StreetAddress", UserPropertySelector.StreetAddress),
+    new("Postal code", "PostalCode", UserPropertySelector.PostalCode),
+    new("Post city", "PostCity", UserPropertySelector.PostCity),
+    new("Gender", "Gender", UserPropertySelector.Gender),
+    new("Birth", "Birth", UserPropertySelector.Birth),
     ];
 
     private void HandleBadgeClick(MergeSMSActionOption option)
     {
-        Console.WriteLine(option.PropertyName);
-
         _smsTemplate = $"{_smsTemplate} [{option.PropertyName}]";
+
+        _messagesSentPerRecipient = (int)Math.Ceiling((double)_smsTemplate.Length / _maxSmsLength);
+
+        _smsPreview = GetMergeSMSPreview();
+
+        _selectedTemplateOption = null;
+
+        StateHasChanged();
     }
 
-    private string GetMergeSMSPreview()
+    private MarkupString GetMergeSMSPreview()
     {
         if (_selectedPreviewUser is null || string.IsNullOrWhiteSpace(_smsTemplate))
         {
-            return string.Empty;
+            return new();
         }
 
-        return _smsTemplate;
+        return new(Users.First(user => user.Id == _selectedPreviewUser.Key).ResolvePreviewMessage(_smsTemplate));
     }
 
     private void HandleModeChange(SendSmsFromContactsMode mode)
@@ -162,6 +216,8 @@
 
         _previewUserOptions = [];
         _selectedPreviewUser = null;
+
+        StateHasChanged();
     }
 
     private void HandleSelectedItemsChange(IList<DropdownItem> selectedItems)
@@ -170,6 +226,8 @@
 
         _previewUserOptions = GetPreviewUsers();
         _selectedPreviewUser = null;
+
+        StateHasChanged();
     }
 
     private void HandlePreviewUserChange(DropdownItem selectedPreviewUser)
@@ -177,22 +235,34 @@
         _selectedPreviewUser = selectedPreviewUser;
 
         _smsPreview = GetMergeSMSPreview();
+
+        StateHasChanged();
     }
 
     private void HandleSmsTemplateChange(string smsTemplate)
     {
         _smsTemplate = smsTemplate;
 
+        _messagesSentPerRecipient = (int)Math.Ceiling((double)_smsTemplate.Length / _maxSmsLength);
+
         _smsPreview = GetMergeSMSPreview();
+
+        _selectedTemplateOption = null;
+
+        StateHasChanged();
     }
 
     private void HandleClearButtonClick()
     {
         Reset();
+
+        StateHasChanged();
     }
 
-    private void HandleSendButtonClick()
+    private async Task HandleSendButtonClick()
     {
+        await HandleSmsSendClick.InvokeAsync((_previewUserOptions, _smsTemplate));
+
         var notificationMessage = new NotificationMessage
             {
                 Severity = NotificationSeverity.Success,
@@ -212,6 +282,24 @@
         _selectedPreviewUser = null;
 
         _smsTemplate = string.Empty;
-        _smsPreview = string.Empty;
+        _smsPreview = new();
+        _messagesSentPerRecipient = 1;
+
+        _selectedTemplateOption = null;
+
+        StateHasChanged();
+    }
+
+    private void HandleMessageTemplateSelection(DropdownItem dropdownItem) 
+    {
+        var mergeSMSTemplate = MessageTemplates.First(messageTemplate => messageTemplate.Id == dropdownItem.Key);
+
+        _smsTemplate = mergeSMSTemplate.MessageTemplate;
+
+        _messagesSentPerRecipient = (int)Math.Ceiling((double)_smsTemplate.Length / _maxSmsLength);
+
+        _smsPreview = GetMergeSMSPreview();
+
+        StateHasChanged();
     }
 }

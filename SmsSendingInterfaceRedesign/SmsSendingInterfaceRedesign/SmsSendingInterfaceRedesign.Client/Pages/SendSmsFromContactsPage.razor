@@ -3,23 +3,21 @@
 
 <PageTitle>Send SMS from contacts</PageTitle>
 
-<SendSmsFromContacts Users="GetUsers()" Groups="UserGroups"></SendSmsFromContacts>
+<SendSmsFromContacts Users="GetUsers()" Groups="UserGroups" MessageTemplates="MessageTemplates"></SendSmsFromContacts>
 
 @code {
+
     private readonly IList<UserGroupDto> UserGroups = [
-        new("Innovators Hub", [
-            new("Ava", "Reynolds"),
-            new("Jamal", "Peterson"),
-        ]),
-        new("Global Connectors", [
-            new("Elise", "Zhang"),
-            new("Noah", "Martinez"),
-            new("Priya", "Kapoor"),
-        ]),
+        new("Innovators Hub", UserFaker.Faker.Generate(2)),
+        new("Global Connectors", UserFaker.Faker.Generate(3)),
     ];
 
     private IList<UserDto> GetUsers()
     {
         return UserGroups.SelectMany(group => group.Users).ToList();
     }
+
+    private readonly IList<MergeSMSTemplate> MessageTemplates = [
+        new("Greeting", "Hello [FirstName]!"),
+    ];
 }
